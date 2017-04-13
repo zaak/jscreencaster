@@ -82,19 +82,7 @@ public class SelectionOverlay extends JFrame {
         setBackground(new Color(0xFF000000, true));
         setLocationRelativeTo(null);
 
-        GraphicsEnvironment ge = GraphicsEnvironment.
-                getLocalGraphicsEnvironment();
-        GraphicsDevice[] gs = ge.getScreenDevices();
-        GraphicsDevice gd = gs[0];
-
-        for (int j = 0; j < gs.length; j++) {
-            if ( gs[j].getIDstring().equals(Settings.getSourceDeviceId())) {
-                gd = gs[j];
-                System.out.println("Got device: " + gs[j].getIDstring());
-
-                break;
-            }
-        }
+        GraphicsDevice gd = Screen.getSourceDevice();
 
         Rectangle desktopBounds = gd.getDefaultConfiguration().getBounds();
 
