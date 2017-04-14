@@ -1,3 +1,4 @@
+package helper;
 
 public class Settings {
     public static String getSourceDeviceId() {

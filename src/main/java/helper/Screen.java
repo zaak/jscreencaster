@@ -1,3 +1,5 @@
+package helper;
+
 import java.awt.*;
 
 public class Screen {

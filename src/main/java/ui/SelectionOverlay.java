@@ -1,3 +1,7 @@
+package ui;
+
+import helper.Screen;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -6,11 +10,19 @@ import javax.swing.*;
 
 public class SelectionOverlay extends JFrame {
     protected boolean isSelecting = false;
-    protected Rectangle selectionRectangle = new Rectangle();
+    protected Rectangle selectionRectangle;
     protected BufferedImage desktopImage;
     protected BufferedImage bgDesktopImage;
 
-    public SelectionOverlay() {
+    public SelectionOverlay(Rectangle selectionRectangle) {
+        this.selectionRectangle = selectionRectangle;
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
+        setSize(100, 200);
+        setBackground(new Color(0xFF000000, true));
+        setLocationRelativeTo(null);
+        setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -34,8 +46,7 @@ public class SelectionOverlay extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    setVisible(false);
-                    dispose();
+                    close();
                 }
             }
         });
@@ -57,18 +68,21 @@ public class SelectionOverlay extends JFrame {
 
     protected void finishSelection(MouseEvent e) {
         isSelecting = false;
-        System.out.println(selectionRectangle);
+        close();
     }
 
     @Override
     public void paint(Graphics g) {
         g.drawImage(bgDesktopImage, 0, 0, this);
-        g.drawImage(
-            desktopImage,
-            selectionRectangle.x, selectionRectangle.y, (int)selectionRectangle.getMaxX(), (int)selectionRectangle.getMaxY(),
-            selectionRectangle.x, selectionRectangle.y, (int)selectionRectangle.getMaxX(), (int)selectionRectangle.getMaxY(),
-            this
-        );
+
+        if (isSelecting) {
+            int minX = selectionRectangle.x;
+            int minY = selectionRectangle.y;
+            int maxX = (int) selectionRectangle.getMaxX();
+            int maxY = (int) selectionRectangle.getMaxY();
+
+            g.drawImage(desktopImage, minX, minY, maxX, maxY, minX, minY, maxX, maxY, this);
+        }
     }
 
     @Override
@@ -77,18 +91,8 @@ public class SelectionOverlay extends JFrame {
     }
 
     public void display() {
-        setUndecorated(true);
-        setSize(100, 200);
-        setBackground(new Color(0xFF000000, true));
-        setLocationRelativeTo(null);
-
         GraphicsDevice gd = Screen.getSourceDevice();
-
         Rectangle desktopBounds = gd.getDefaultConfiguration().getBounds();
-
-        System.out.println("->>>>>");
-        System.out.println(gd.getIDstring());
-        System.out.println(desktopBounds);
 
         try {
             desktopImage = new Robot().createScreenCapture(desktopBounds);
@@ -104,5 +108,10 @@ public class SelectionOverlay extends JFrame {
         setVisible(true);
 
         gd.setFullScreenWindow(this);
+    }
+
+    public void close() {
+        setVisible(false);
+        dispose();
     }
 }
