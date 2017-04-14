@@ -7,15 +7,15 @@ public class Screen {
         GraphicsEnvironment ge = GraphicsEnvironment.
                 getLocalGraphicsEnvironment();
         GraphicsDevice[] gs = ge.getScreenDevices();
-        GraphicsDevice gd = gs[0];
+        GraphicsDevice graphicsDevice = gs[0];
 
-        for (GraphicsDevice _gd : gs ) {
-            if ( _gd.getIDstring().equals(Settings.getSourceDeviceId())) {
-                gd = _gd;
+        for (GraphicsDevice gd : gs ) {
+            if ( gd.getIDstring().equals(Settings.getSourceDeviceId())) {
+                graphicsDevice = gd;
                 break;
             }
         }
 
-        return gd;
+        return graphicsDevice;
     }
 }

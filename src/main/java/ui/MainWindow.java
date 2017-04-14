@@ -4,6 +4,7 @@ import recorder.ByzanzRecorder;
 import recorder.ScreenRecorder;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class MainWindow extends JFrame {
@@ -12,22 +13,26 @@ public class MainWindow extends JFrame {
     protected Thread recordingThread;
 
     public MainWindow() {
-        setSize(260, 80);
+        setTitle("JScreencaster");
+        setSize(260, 95);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //getContentPane().setBackground(new Color(0x00444444));
 
-        setLayout(new FlowLayout());
+        JPanel buttonsPanel = new JPanel();
 
-        Dimension buttonSize = new Dimension(40, 40);
+        setLayout(new BorderLayout());
 
-        Icon iconTarget = new ImageIcon(getClass().getResource("/icons/target.png"));
+        Dimension buttonSize = new Dimension(75, 40);
+
+        Icon iconTarget = new ImageIcon(getClass().getResource("/icons/target2.png"));
         JButton buttonSelect = new JButton(iconTarget);
         buttonSelect.setPreferredSize(buttonSize);
         buttonSelect.addActionListener(e -> {
             SelectionOverlay so = new SelectionOverlay(sourceDesktopRectangle);
             so.display();
         });
-        add(buttonSelect);
+        buttonsPanel.add(buttonSelect);
 
         Icon iconRecord = new ImageIcon(getClass().getResource("/icons/record.png"));
         JButton buttonRecordStop = new JButton(iconRecord);
@@ -42,25 +47,17 @@ public class MainWindow extends JFrame {
                 recordingThread.start();
             }
         });
-        add(buttonRecordStop);
+        buttonsPanel.add(buttonRecordStop);
 
         Icon iconSettings = new ImageIcon(getClass().getResource("/icons/settings.png"));
         JButton buttonSettings = new JButton(iconSettings);
         buttonSettings.setPreferredSize(buttonSize);
-        add(buttonSettings);
+        buttonsPanel.add(buttonSettings);
+
+        add(buttonsPanel, BorderLayout.CENTER);
+
+        JLabel statusLabel = new JLabel("Select area to record");
+        statusLabel.setBorder(new EmptyBorder(2, 5, 2, 5));
+        add(statusLabel, BorderLayout.PAGE_END);
     }
 }
-
-/*
-      "byzanz": {
-         "title": "Byzanz",
-         "enabled": true,
-         "-sound-on": "-a",
-         "-sound-off": "",
-         "custom": {
-            "GIF (Window)": "#DC_WINDOW_HELPER# byzanz-record {SOUND} -e 'sleep 191449' -x {X} -y {Y} -w {WIDTH} -h {HEIGHT} {DIRECTORY}/{FILENAME}.gif",
-            "GIF (Select)": "#DC_AREA_HELPER# byzanz-record {SOUND} -e 'sleep 191449' -x {X} -y {Y} -w {WIDTH} -h {HEIGHT} {DIRECTORY}/{FILENAME}.gif",
-            "Stop recording": "pkill -nf 'sleep 191449'"
-         }
-      }
- */

@@ -1,10 +1,13 @@
 package recorder;
 
+import helper.CommandBuilder;
 import helper.Screen;
 
 import java.awt.*;
 
 public class ByzanzRecorder extends ScreenRecorder {
+    protected static final String DELAY_COMMAND = "sleep 191337";
+
     @Override
     public void run() {
         System.out.println("Starting recording...");
@@ -18,9 +21,17 @@ public class ByzanzRecorder extends ScreenRecorder {
             int width = Math.abs(sourceDesktopRectangle.width);
             int height = Math.abs(sourceDesktopRectangle.height);
 
-            System.out.println(">>>  " + sourceDesktopRectangle.width + " - " + sourceDesktopRectangle.height);
+            CommandBuilder commandBuilder = new CommandBuilder();
+            commandBuilder.setCommand("byzanz-record")
+                          .addParam("-x", x)
+                          .addParam("-y", y)
+                          .addParam("-w", width)
+                          .addParam("-h", height)
+                          .addParam("-e", DELAY_COMMAND)
+                          .addParam("-c")
+                          .addParam("/home/zaak/tmp/o.gif");
 
-            ProcessBuilder pb = new ProcessBuilder("byzanz-record", "-x", Integer.toString(x), "-y", Integer.toString(y), "-w", Integer.toString(width), "-h", Integer.toString(height), "-e", "sleep 191449", "-c", "/home/zaak/tmp/o.gif");
+            ProcessBuilder pb = new ProcessBuilder(commandBuilder.build());
             pb.redirectOutput();
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
             Process p = pb.start();
@@ -35,7 +46,7 @@ public class ByzanzRecorder extends ScreenRecorder {
     @Override
     public void finish() {
         try {
-            ProcessBuilder pb = new ProcessBuilder("pkill", "-nf", "sleep 191449");
+            ProcessBuilder pb = new ProcessBuilder("pkill", "-nf", "sleep 191337");
             pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
             Process p = pb.start();
