@@ -8,13 +8,14 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import javax.swing.*;
 
-public class SelectionOverlay extends JFrame {
-    protected boolean isSelecting = false;
-    protected Rectangle selectionRectangle;
-    protected BufferedImage desktopImage;
-    protected BufferedImage bgDesktopImage;
+class SelectionOverlay extends JFrame {
+    private boolean isSelecting = false;
+    private Rectangle selectionRectangle;
+    private BufferedImage desktopImage;
+    private BufferedImage bgDesktopImage;
+    private Runnable onSelectedCallback = () -> {};
 
-    public SelectionOverlay(Rectangle selectionRectangle) {
+    SelectionOverlay(Rectangle selectionRectangle) {
         this.selectionRectangle = selectionRectangle;
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -52,13 +53,13 @@ public class SelectionOverlay extends JFrame {
         });
     }
 
-    protected void startSelection(MouseEvent e) {
+    private void startSelection(MouseEvent e) {
         isSelecting = true;
         selectionRectangle.setLocation(e.getX(), e.getY());
 
     }
 
-    protected void changeSelection(MouseEvent e) {
+    private void changeSelection(MouseEvent e) {
         int selectionWidth = e.getX() - selectionRectangle.x;
         int selectionHeight = e.getY() - selectionRectangle.y;
 
@@ -66,8 +67,9 @@ public class SelectionOverlay extends JFrame {
         repaint();
     }
 
-    protected void finishSelection(MouseEvent e) {
+    private void finishSelection(MouseEvent e) {
         isSelecting = false;
+        onSelectedCallback.run();
         close();
     }
 
@@ -90,7 +92,7 @@ public class SelectionOverlay extends JFrame {
         paint(g);
     }
 
-    public void display() {
+    void display() {
         GraphicsDevice gd = Screen.getSourceDevice();
         Rectangle desktopBounds = gd.getDefaultConfiguration().getBounds();
 
@@ -110,8 +112,12 @@ public class SelectionOverlay extends JFrame {
         gd.setFullScreenWindow(this);
     }
 
-    public void close() {
+    private void close() {
         setVisible(false);
         dispose();
+    }
+
+    void onSelected(Runnable onSelectedCallback) {
+        this.onSelectedCallback = onSelectedCallback;
     }
 }

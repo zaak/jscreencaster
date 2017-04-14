@@ -10,7 +10,7 @@ public class ByzanzRecorder extends ScreenRecorder {
 
     @Override
     public void run() {
-        System.out.println("Starting recording...");
+        System.out.println("ByzanzRecorder: Starting recording...");
 
         try {
             GraphicsDevice gd = Screen.getSourceDevice();
@@ -35,18 +35,20 @@ public class ByzanzRecorder extends ScreenRecorder {
             pb.redirectOutput();
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
             Process p = pb.start();
+            onRecordStartCallback.run();
             p.waitFor();
+            onRecordStopCallback.run();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-
-        System.out.println("Stopping recording...");
+        System.out.println("ByzanzRecorder: Recording stopped.");
     }
 
     @Override
     public void finish() {
         try {
-            ProcessBuilder pb = new ProcessBuilder("pkill", "-nf", "sleep 191337");
+            System.out.println("ByzanzRecorder: Stopping recording...");
+            ProcessBuilder pb = new ProcessBuilder("pkill", "-nf", DELAY_COMMAND);
             pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
             Process p = pb.start();
