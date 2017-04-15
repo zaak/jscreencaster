@@ -1,4 +1,5 @@
 import ui.MainWindow;
+import util.SettingsManager;
 
 import javax.swing.*;
 import javax.swing.UIManager.*;
@@ -15,6 +16,8 @@ public class App {
         } catch (Exception e) {
             // Nimbus is not available, use default look and feel.
         }
+
+        SettingsManager.loadSettings();
 
         MainWindow mw = new MainWindow();
         mw.setVisible(true);
