@@ -8,18 +8,21 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class MainWindow extends JFrame {
+    private static final String TITLE = "JScreencaster";
+
     private Rectangle sourceDesktopRectangle = new Rectangle();
     private ScreenRecorder screenRecorder;
     private Thread recordingThread;
 
     private JButton buttonSelect;
     private JButton buttonRecordStop;
-    private JButton buttonSettings;
+    private JToggleButton buttonSettings;
+    private SettingsPanel settingsPanel;
 
 //    private JLabel statusLabel;
 
     public MainWindow() {
-        setTitle("JScreencaster");
+        setTitle(TITLE);
         setSize(260, 75);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -54,14 +57,14 @@ public class MainWindow extends JFrame {
                 screenRecorder.setSourceDesktopRectangle(sourceDesktopRectangle);
 
                 screenRecorder.onRecordStart(() -> {
-//                    statusLabel.setText("Recording...");
+                    setTitle("Recording...");
                     buttonRecordStop.setIcon(iconStop);
                     buttonSelect.setEnabled(false);
                     buttonSettings.setEnabled(false);
                 } );
 
                 screenRecorder.onRecordStop(() -> {
-//                    statusLabel.setText("");
+                    setTitle(TITLE);
                     buttonRecordStop.setIcon(iconRecord);
                     buttonSelect.setEnabled(true);
                     buttonRecordStop.setEnabled(true);
@@ -76,14 +79,20 @@ public class MainWindow extends JFrame {
         buttonsPanel.add(buttonRecordStop);
 
         Icon iconSettings = new ImageIcon(getClass().getResource("/icons/settings.png"));
-        buttonSettings = new JButton(iconSettings);
+        buttonSettings = new JToggleButton(iconSettings);
         buttonSettings.setPreferredSize(buttonSize);
+        buttonSettings.addActionListener(e -> {
+            if (buttonSettings.isSelected()) {
+                setSize(getWidth(), getHeight() + settingsPanel.calculateHeight());
+            } else {
+                setSize(getWidth(), getHeight() - settingsPanel.calculateHeight());
+            }
+        });
         buttonsPanel.add(buttonSettings);
 
-        add(buttonsPanel, BorderLayout.CENTER);
-//
-//        statusLabel = new JLabel("Select area to record.");
-//        statusLabel.setBorder(new EmptyBorder(2, 5, 2, 5));
-//        add(statusLabel, BorderLayout.PAGE_END);
+        add(buttonsPanel, BorderLayout.PAGE_START);
+
+        settingsPanel = new SettingsPanel();
+        add(settingsPanel, BorderLayout.CENTER);
     }
 }

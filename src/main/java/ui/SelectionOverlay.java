@@ -1,6 +1,6 @@
 package ui;
 
-import helper.Screen;
+import util.DisplayManager;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -93,7 +93,7 @@ class SelectionOverlay extends JFrame {
     }
 
     void display() {
-        GraphicsDevice gd = Screen.getSourceDevice();
+        GraphicsDevice gd = DisplayManager.getSourceDevice();
         Rectangle desktopBounds = gd.getDefaultConfiguration().getBounds();
 
         try {

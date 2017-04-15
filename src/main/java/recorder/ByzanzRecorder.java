@@ -1,19 +1,19 @@
 package recorder;
 
-import helper.CommandBuilder;
-import helper.Screen;
+import util.CommandBuilder;
+import util.DisplayManager;
 
 import java.awt.*;
 
 public class ByzanzRecorder extends ScreenRecorder {
-    protected static final String DELAY_COMMAND = "sleep 191337";
+    private static final String DELAY_COMMAND = "sleep 191337";
 
     @Override
     public void run() {
         System.out.println("ByzanzRecorder: Starting recording...");
 
         try {
-            GraphicsDevice gd = Screen.getSourceDevice();
+            GraphicsDevice gd = DisplayManager.getSourceDevice();
             Rectangle desktopBounds = gd.getDefaultConfiguration().getBounds();
 
             int x = Math.min((int)sourceDesktopRectangle.getMaxX(), sourceDesktopRectangle.x) + desktopBounds.x;

@@ -1,8 +1,8 @@
-package helper;
+package util;
 
 import java.awt.*;
 
-public class Screen {
+public class DisplayManager {
     public static GraphicsDevice getSourceDevice() {
         GraphicsEnvironment ge = GraphicsEnvironment.
                 getLocalGraphicsEnvironment();
@@ -10,7 +10,7 @@ public class Screen {
         GraphicsDevice graphicsDevice = gs[0];
 
         for (GraphicsDevice gd : gs ) {
-            if ( gd.getIDstring().equals(Settings.getSourceDeviceId())) {
+            if ( gd.getIDstring().equals(SettingsManager.getSourceDeviceId())) {
                 graphicsDevice = gd;
                 break;
             }
