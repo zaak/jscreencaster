@@ -18,7 +18,11 @@ public class SettingsPanel extends JPanel {
 
         addLabel(new JLabel("Output directory:"));
 
-        add(new JTextField());
+        JPanel directoryChooserPanel = new JPanel();
+        directoryChooserPanel.setLayout(new BoxLayout(directoryChooserPanel, BoxLayout.X_AXIS));
+        directoryChooserPanel.add(new JTextField());
+        directoryChooserPanel.add(new JButton("..."));
+        add(directoryChooserPanel);
 
         addCheckbox(new JCheckBox("Record mouse cursor", true));
     }
