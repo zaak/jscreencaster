@@ -83,11 +83,22 @@ public class SettingsPanel extends JPanel {
 
         ArrayList<GDInfoItem> gdInfoItems = new ArrayList<>();
 
+        GDInfoItem selectedItem = null;
+
         for (GraphicsDevice gd : gds) {
-            gdInfoItems.add(new GDInfoItem(gd));
+            GDInfoItem gdInfoItem = new GDInfoItem(gd);
+            gdInfoItems.add(gdInfoItem);
+
+            if (SettingsManager.getActiveDisplayId().equals(gdInfoItem.getIdString())) {
+                selectedItem = gdInfoItem;
+            }
         }
 
         JComboBox<GDInfoItem> displaysComboBox = new JComboBox<>(gdInfoItems.toArray(new GDInfoItem[gdInfoItems.size()]));
+
+        if (selectedItem != null) {
+            displaysComboBox.setSelectedItem(selectedItem);
+        }
 
         displaysComboBox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
