@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public class SettingsManager {
-    private static String activeDisplayId;
+    private static String activeDisplayId = DisplayManager.getSourceDevice().getIDstring();
     private static String outputDirectory = System.getProperty("user.dir");
     private static Point windowLocation = new Point(0, 0);
 
@@ -32,6 +32,7 @@ public class SettingsManager {
         } catch (Exception e) {
             System.err.println("Couldn't load settings file. Used path: " + getSettingsFilePath());
             System.err.println(e.toString());
+            e.printStackTrace();
         }
     }
 
@@ -56,6 +57,7 @@ public class SettingsManager {
         } catch (Exception e) {
             System.err.println("Couldn't save settings file. Used path: " + getSettingsFilePath());
             System.err.println(e.toString());
+            e.printStackTrace();
         }
 
     }

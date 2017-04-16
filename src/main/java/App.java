@@ -35,6 +35,7 @@ public class App {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Byzanz executable not found.\nThe application will now close.");
             System.err.println(e.toString());
+            e.printStackTrace();
         }
 
         return false;

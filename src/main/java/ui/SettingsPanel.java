@@ -44,6 +44,7 @@ public class SettingsPanel extends JPanel {
             dirChooser.setCurrentDirectory(new java.io.File(SettingsManager.getOutputDirectoryPath()));
             dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             dirChooser.setAcceptAllFileFilterUsed(false);
+            dirChooser.setApproveButtonText("OK");
 
             if (dirChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 String chosenDirPath = dirChooser.getSelectedFile().toString();
@@ -83,7 +84,7 @@ public class SettingsPanel extends JPanel {
             GDInfoItem gdInfoItem = new GDInfoItem(gd);
             gdInfoItems.add(gdInfoItem);
 
-            if (SettingsManager.getActiveDisplayId().equals(gdInfoItem.getIdString())) {
+            if (gdInfoItem.getIdString().equals(SettingsManager.getActiveDisplayId())) {
                 selectedItem = gdInfoItem;
             }
         }

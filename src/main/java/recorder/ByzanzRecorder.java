@@ -59,7 +59,8 @@ public class ByzanzRecorder extends Recorder {
 
             onRecordStopCallback.run();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println(e.toString());
+            e.printStackTrace();
         }
 
         System.out.println("ByzanzRecorder: Recording stopped.");
@@ -75,7 +76,8 @@ public class ByzanzRecorder extends Recorder {
             Process p = pb.start();
             p.waitFor();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println(e.toString());
+            e.printStackTrace();
         }
     }
 }

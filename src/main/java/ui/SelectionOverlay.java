@@ -13,7 +13,7 @@ class SelectionOverlay extends JFrame {
     private Rectangle selectionRectangle;
     private BufferedImage desktopImage;
     private BufferedImage bgDesktopImage;
-    private Runnable onSelectedCallback = () -> {};
+    private Runnable onCloseCallback = () -> {};
     private boolean areaSelected = false;
 
     SelectionOverlay(Rectangle selectionRectangle) {
@@ -24,6 +24,10 @@ class SelectionOverlay extends JFrame {
         setBackground(new Color(0xFF000000, true));
         setLocationRelativeTo(null);
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+
+        ImageIcon iconTarget = new ImageIcon(getClass().getResource("/icons/target.png"));
+
+        setIconImage(iconTarget.getImage());
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -50,6 +54,16 @@ class SelectionOverlay extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     close();
                 }
+            }
+        });
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.out.println(e);
+
+                onCloseCallback.run();
+                super.windowClosing(e);
             }
         });
     }
@@ -102,8 +116,9 @@ class SelectionOverlay extends JFrame {
 
             RescaleOp op = new RescaleOp(.5f, 0, null);
             bgDesktopImage = op.filter(desktopImage, null);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         setLocation(desktopBounds.x, getY());
@@ -114,13 +129,13 @@ class SelectionOverlay extends JFrame {
     }
 
     private void close() {
-        onSelectedCallback.run();
+        onCloseCallback.run();
         setVisible(false);
         dispose();
     }
 
     void onClose(Runnable onSelectedCallback) {
-        this.onSelectedCallback = onSelectedCallback;
+        this.onCloseCallback = onSelectedCallback;
     }
 
     public boolean isAreaSelected() {

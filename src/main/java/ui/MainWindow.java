@@ -35,7 +35,7 @@ public class MainWindow extends JFrame {
 
         Dimension buttonSize = new Dimension(75, 40);
 
-        Icon iconTarget = new ImageIcon(getClass().getResource("/icons/target.png"));
+        ImageIcon iconTarget = new ImageIcon(getClass().getResource("/icons/target.png"));
         buttonSelect = new JButton(iconTarget);
         buttonSelect.setPreferredSize(buttonSize);
         buttonSelect.addActionListener(e -> {
@@ -49,8 +49,9 @@ public class MainWindow extends JFrame {
         });
         buttonsPanel.add(buttonSelect);
 
-        Icon iconRecord = new ImageIcon(getClass().getResource("/icons/record.png"));
-        Icon iconStop = new ImageIcon(getClass().getResource("/icons/stop.png"));
+        ImageIcon iconRecord = new ImageIcon(getClass().getResource("/icons/record.png"));
+        setIconImage(iconRecord.getImage());
+        ImageIcon iconStop = new ImageIcon(getClass().getResource("/icons/stop.png"));
         buttonRecordStop = new JButton(iconRecord);
         buttonRecordStop.setPreferredSize(buttonSize);
         buttonRecordStop.addActionListener(e -> {
