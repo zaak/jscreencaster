@@ -35,13 +35,17 @@ public class MainWindow extends JFrame {
 
         Dimension buttonSize = new Dimension(75, 40);
 
-        Icon iconTarget = new ImageIcon(getClass().getResource("/icons/target2.png"));
+        Icon iconTarget = new ImageIcon(getClass().getResource("/icons/target.png"));
         buttonSelect = new JButton(iconTarget);
         buttonSelect.setPreferredSize(buttonSize);
         buttonSelect.addActionListener(e -> {
             SelectionOverlay so = new SelectionOverlay(sourceDesktopRectangle);
-            so.onSelected(() -> buttonRecordStop.setEnabled(true));
+            so.onClose(() -> {
+                buttonRecordStop.setEnabled(so.isAreaSelected());
+                buttonSelect.setEnabled(true);
+            });
             so.display();
+            buttonSelect.setEnabled(false);
         });
         buttonsPanel.add(buttonSelect);
 

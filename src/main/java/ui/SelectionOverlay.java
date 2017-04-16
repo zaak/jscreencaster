@@ -14,6 +14,7 @@ class SelectionOverlay extends JFrame {
     private BufferedImage desktopImage;
     private BufferedImage bgDesktopImage;
     private Runnable onSelectedCallback = () -> {};
+    private boolean areaSelected = false;
 
     SelectionOverlay(Rectangle selectionRectangle) {
         this.selectionRectangle = selectionRectangle;
@@ -69,7 +70,7 @@ class SelectionOverlay extends JFrame {
 
     private void finishSelection(MouseEvent e) {
         isSelecting = false;
-        onSelectedCallback.run();
+        areaSelected = true;
         close();
     }
 
@@ -113,11 +114,16 @@ class SelectionOverlay extends JFrame {
     }
 
     private void close() {
+        onSelectedCallback.run();
         setVisible(false);
         dispose();
     }
 
-    void onSelected(Runnable onSelectedCallback) {
+    void onClose(Runnable onSelectedCallback) {
         this.onSelectedCallback = onSelectedCallback;
+    }
+
+    public boolean isAreaSelected() {
+        return areaSelected;
     }
 }
