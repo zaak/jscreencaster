@@ -1,5 +1,6 @@
 package util;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,7 +12,7 @@ import java.util.Properties;
 public class SettingsManager {
     private static String activeDisplayId;
     private static String outputDirectory = System.getProperty("user.dir");
-    private static boolean recordCursor = true;
+    private static Point windowLocation = new Point(0, 0);
 
     private static Path getSettingsFilePath() {
         return Paths.get(System.getProperty("user.home"), ".config", "jscreencaster", "settings.properties");
@@ -24,7 +25,10 @@ public class SettingsManager {
 
             activeDisplayId = properties.getProperty("activeDisplayId");
             outputDirectory = properties.getProperty("outputDirectory");
-            recordCursor = Boolean.parseBoolean(properties.getProperty("recordCursor"));
+            windowLocation = new Point(
+                    Integer.parseInt(properties.getProperty("windowLocationX")),
+                    Integer.parseInt(properties.getProperty("windowLocationY"))
+            );
         } catch (Exception e) {
             System.err.println("Couldn't load settings file. Used path: " + getSettingsFilePath());
             System.err.println(e.toString());
@@ -36,7 +40,8 @@ public class SettingsManager {
             Properties properties = new Properties();
             properties.setProperty("activeDisplayId", activeDisplayId);
             properties.setProperty("outputDirectory", outputDirectory);
-            properties.setProperty("recordCursor", Boolean.toString(recordCursor));
+            properties.setProperty("windowLocationX", Integer.toString(windowLocation.x));
+            properties.setProperty("windowLocationY", Integer.toString(windowLocation.y));
 
             Path settingsFilePath = getSettingsFilePath();
             Path settingsDirectoryPath = settingsFilePath.getParent();
@@ -62,8 +67,8 @@ public class SettingsManager {
         return outputDirectory;
     }
 
-    public static boolean getRecordCursor() {
-        return recordCursor;
+    public static Point getWindowLocation() {
+        return windowLocation;
     }
 
     public static void setActiveDisplayId(String _activeDisplayId) {
@@ -78,8 +83,8 @@ public class SettingsManager {
         saveSettings();
     }
 
-    public static void setRecordCursor(boolean _recordCursor) {
-        recordCursor = _recordCursor;
+    public static void setWindowLocation(Point _windowLocation) {
+        windowLocation = _windowLocation;
 
         saveSettings();
     }

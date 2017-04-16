@@ -2,10 +2,15 @@ package ui;
 
 import recorder.ByzanzRecorder;
 import recorder.ScreenRecorder;
+import util.SettingsManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 public class MainWindow extends JFrame {
     private static final String TITLE = "JScreencaster";
@@ -26,6 +31,7 @@ public class MainWindow extends JFrame {
         setSize(260, 75);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setLocation(SettingsManager.getWindowLocation());
         //getContentPane().setBackground(new Color(0x00444444));
 
         JPanel buttonsPanel = new JPanel();
@@ -87,6 +93,9 @@ public class MainWindow extends JFrame {
             } else {
                 setSize(getWidth(), getHeight() - settingsPanel.calculateHeight());
             }
+
+            System.out.println(getLocation());
+
         });
         buttonsPanel.add(buttonSettings);
 
@@ -94,5 +103,23 @@ public class MainWindow extends JFrame {
 
         settingsPanel = new SettingsPanel();
         add(settingsPanel, BorderLayout.CENTER);
+
+        Timer saveLocationTimer = new Timer(2000, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingsManager.setWindowLocation(getLocation());
+            }
+        });
+
+        saveLocationTimer.setRepeats(false);
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                if(!saveLocationTimer.isRunning()) {
+                    saveLocationTimer.start();
+                }
+            }
+        });
     }
 }

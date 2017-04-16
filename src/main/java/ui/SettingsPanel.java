@@ -10,7 +10,7 @@ import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 
 public class SettingsPanel extends JPanel {
-    private static final int MAX_HEIGHT = 170;
+    private static final int MAX_HEIGHT = 140;
 
     public SettingsPanel() {
         setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -48,12 +48,6 @@ public class SettingsPanel extends JPanel {
         directoryChooserPanel.add(outputDirBrowseButton);
 
         add(directoryChooserPanel);
-
-        //
-
-        JCheckBox recordCursorCheckbox = new JCheckBox("Record mouse cursor", SettingsManager.getRecordCursor());
-        recordCursorCheckbox.addItemListener(e -> SettingsManager.setRecordCursor(e.getStateChange() == ItemEvent.SELECTED));
-        addCheckbox(recordCursorCheckbox);
     }
 
     private Component add(JComponent component) {
@@ -70,12 +64,6 @@ public class SettingsPanel extends JPanel {
         label.setBorder(new EmptyBorder(5, 3, 0, 0));
 
         return this.add(label);
-    }
-
-    private Component addCheckbox(JCheckBox checkbox) {
-        checkbox.setBorder(new EmptyBorder(5, 0, 0, 0));
-
-        return this.add(checkbox);
     }
 
     private JComboBox<GDInfoItem> createDisplaysComboBox() {

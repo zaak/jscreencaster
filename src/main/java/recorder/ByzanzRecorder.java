@@ -34,10 +34,6 @@ public class ByzanzRecorder extends ScreenRecorder {
                     .addParam("-h", height)
                     .addParam("-e", DELAY_COMMAND);
 
-            if (SettingsManager.getRecordCursor()) {
-                commandBuilder.addParam("-c");
-            }
-
             String targetFileName = "screenscast_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".gif";
             String targetFilePath = Paths.get(SettingsManager.getOutputDirectoryPath(), targetFileName).toString();
             commandBuilder.addParam(targetFilePath);
@@ -54,6 +50,7 @@ public class ByzanzRecorder extends ScreenRecorder {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+
         System.out.println("ByzanzRecorder: Recording stopped.");
     }
 
