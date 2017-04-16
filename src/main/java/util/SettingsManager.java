@@ -52,6 +52,7 @@ public class SettingsManager {
 
             FileOutputStream outStream = new FileOutputStream(new File(settingsFilePath.toString()));
             properties.store(outStream, "JScreencaster settings");
+            outStream.close();
         } catch (Exception e) {
             System.err.println("Couldn't save settings file. Used path: " + getSettingsFilePath());
             System.err.println(e.toString());

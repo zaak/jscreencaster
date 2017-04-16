@@ -5,6 +5,8 @@ import util.DisplayManager;
 import util.SettingsManager;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,12 +42,21 @@ public class ByzanzRecorder extends ScreenRecorder {
 
             System.out.println("Running command: \n" + String.join(" ", commandBuilder.build()));
 
-            ProcessBuilder pb = new ProcessBuilder(commandBuilder.build());
-            pb.redirectOutput();
-            pb.redirectError(ProcessBuilder.Redirect.INHERIT);
-            Process p = pb.start();
+            ProcessBuilder processBuilder = new ProcessBuilder(commandBuilder.build());
+            processBuilder.redirectErrorStream(true);
+            processBuilder.redirectError(ProcessBuilder.Redirect.INHERIT);
+            Process process = processBuilder.start();
+
             onRecordStartCallback.run();
-            p.waitFor();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            process.waitFor();
+
             onRecordStopCallback.run();
         } catch (Exception e) {
             System.err.println(e.getMessage());

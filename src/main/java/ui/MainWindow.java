@@ -5,12 +5,10 @@ import recorder.ScreenRecorder;
 import util.SettingsManager;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 public class MainWindow extends JFrame {
     private static final String TITLE = "JScreencaster";
@@ -24,15 +22,12 @@ public class MainWindow extends JFrame {
     private JToggleButton buttonSettings;
     private SettingsPanel settingsPanel;
 
-//    private JLabel statusLabel;
-
     public MainWindow() {
         setTitle(TITLE);
         setSize(260, 75);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(SettingsManager.getWindowLocation());
-        //getContentPane().setBackground(new Color(0x00444444));
 
         JPanel buttonsPanel = new JPanel();
 
