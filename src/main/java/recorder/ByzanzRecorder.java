@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ByzanzRecorder extends ScreenRecorder {
+public class ByzanzRecorder extends Recorder {
     private static final String DELAY_COMMAND = "sleep 191337";
 
     @Override

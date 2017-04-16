@@ -1,7 +1,7 @@
 package ui;
 
 import recorder.ByzanzRecorder;
-import recorder.ScreenRecorder;
+import recorder.Recorder;
 import util.SettingsManager;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ public class MainWindow extends JFrame {
     private static final String TITLE = "JScreencaster";
 
     private Rectangle sourceDesktopRectangle = new Rectangle();
-    private ScreenRecorder screenRecorder;
+    private Recorder screenRecorder;
     private Thread recordingThread;
 
     private JButton buttonSelect;
@@ -61,7 +61,7 @@ public class MainWindow extends JFrame {
                     setTitle("Recording...");
                     buttonRecordStop.setIcon(iconStop);
                     buttonSelect.setEnabled(false);
-                    buttonSettings.setEnabled(false);
+                    settingsPanel.setEnabled(false);
                 } );
 
                 screenRecorder.onRecordStop(() -> {
@@ -69,7 +69,7 @@ public class MainWindow extends JFrame {
                     buttonRecordStop.setIcon(iconRecord);
                     buttonSelect.setEnabled(true);
                     buttonRecordStop.setEnabled(true);
-                    buttonSettings.setEnabled(true);
+                    settingsPanel.setEnabled(true);
                 });
 
                 recordingThread = new Thread(screenRecorder);
@@ -82,16 +82,7 @@ public class MainWindow extends JFrame {
         Icon iconSettings = new ImageIcon(getClass().getResource("/icons/settings.png"));
         buttonSettings = new JToggleButton(iconSettings);
         buttonSettings.setPreferredSize(buttonSize);
-        buttonSettings.addActionListener(e -> {
-            if (buttonSettings.isSelected()) {
-                setSize(getWidth(), getHeight() + settingsPanel.calculateHeight());
-            } else {
-                setSize(getWidth(), getHeight() - settingsPanel.calculateHeight());
-            }
-
-            System.out.println(getLocation());
-
-        });
+        buttonSettings.addActionListener(e -> showSettingsPanel(buttonSettings.isSelected()));
         buttonsPanel.add(buttonSettings);
 
         add(buttonsPanel, BorderLayout.PAGE_START);
@@ -116,5 +107,14 @@ public class MainWindow extends JFrame {
                 }
             }
         });
+    }
+
+    private void showSettingsPanel(boolean visible) {
+        if (visible) {
+            setSize(getWidth(), getHeight() + settingsPanel.calculateHeight());
+        } else {
+            buttonSettings.setSelected(false);
+            setSize(getWidth(), getHeight() - settingsPanel.calculateHeight());
+        }
     }
 }

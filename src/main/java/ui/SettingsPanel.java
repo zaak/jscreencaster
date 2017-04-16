@@ -12,6 +12,10 @@ import java.util.ArrayList;
 public class SettingsPanel extends JPanel {
     private static final int MAX_HEIGHT = 140;
 
+    private JComboBox activeDisplayComboBox;
+    private JTextField outputhDirPathText;
+    private JButton outputDirBrowseButton;
+
     public SettingsPanel() {
         setBorder(new EmptyBorder(5, 5, 5, 5));
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -19,7 +23,9 @@ public class SettingsPanel extends JPanel {
         add(new JSeparator(SwingConstants.HORIZONTAL));
 
         addLabel(new JLabel("Active display:"));
-        add(createDisplaysComboBox());
+
+        activeDisplayComboBox = createDisplaysComboBox();
+        add(activeDisplayComboBox);
 
         //
 
@@ -28,11 +34,11 @@ public class SettingsPanel extends JPanel {
         JPanel directoryChooserPanel = new JPanel();
         directoryChooserPanel.setLayout(new BoxLayout(directoryChooserPanel, BoxLayout.X_AXIS));
 
-        JTextField outputhDirPathText = new JTextField(SettingsManager.getOutputDirectoryPath());
+        outputhDirPathText = new JTextField(SettingsManager.getOutputDirectoryPath());
         outputhDirPathText.setEditable(false);
         directoryChooserPanel.add(outputhDirPathText);
 
-        JButton outputDirBrowseButton = new JButton("...");
+        outputDirBrowseButton = new JButton("...");
         outputDirBrowseButton.addActionListener(e -> {
             JFileChooser dirChooser = new JFileChooser();
             dirChooser.setCurrentDirectory(new java.io.File(SettingsManager.getOutputDirectoryPath()));
@@ -101,5 +107,12 @@ public class SettingsPanel extends JPanel {
 
     public int calculateHeight() {
         return MAX_HEIGHT;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        activeDisplayComboBox.setEnabled(enabled);
+        outputhDirPathText.setEnabled(enabled);
+        outputDirBrowseButton.setEnabled(enabled);
     }
 }
